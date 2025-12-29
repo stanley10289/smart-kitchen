@@ -192,4 +192,4 @@ if selected_names:
                     st.markdown("---")
                     st.caption("📖 參考來源")
                     for s in sources:
-                        st.markdown(f"🔗 [{s['title']}]
+                        st.markdown(f"🔗 [{s['title']}]({s['uri']})")
