@@ -99,7 +99,7 @@ if 'ingredients' not in st.session_state:
 
 # --- 主介面 ---
 st.title("🥗 SMART KITCHEN")
-st.markdown("##### 零浪費智慧廚房管理系統 (雲端同步版)")
+st.markdown("##### 零浪費智慧廚房管理系統")
 
 # 第一區：新增食材表單
 with st.container():
