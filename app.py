@@ -5,7 +5,7 @@ import pandas as pd
 
 # --- 1. API 配置區 ---
 # 你可以直接在這裡填入你的 Gemini API Key
-GEMINI_API_KEY = "你的_GEMINI_API_KEY_寫在這裡" 
+GEMINI_API_KEY = "AIzaSyCLx1hnWhRB-G40-M8vUwMADJQ9mNb50O4" 
 
 # --- 頁面基本設定 ---
 st.set_page_config(page_title="SMART KITCHEN", page_icon="🥗", layout="wide")
