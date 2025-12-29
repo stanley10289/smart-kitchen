@@ -3,22 +3,68 @@ import datetime
 import requests
 import pandas as pd
 
+# --- 1. API 配置區 ---
+# 你可以直接在這裡填入你的 Gemini API Key
+GEMINI_API_KEY = "你的_GEMINI_API_KEY_寫在這裡" 
 
-GEMINI_API_KEY = "AIzaSyCLx1hnWhRB-G40-M8vUwMADJQ9mNb50O4" 
-
-
+# --- 頁面基本設定 ---
 st.set_page_config(page_title="SMART KITCHEN", page_icon="🥗", layout="wide")
 
-
+# --- 自定義 CSS 美化 (深色背景版) ---
 st.markdown("""
     <style>
-    .stButton>button { width: 100%; border-radius: 12px; font-weight: bold; }
-    .stApp { background-color: #f8fafc; }
-    h1 { color: #059669 !important; font-family: 'Inter', sans-serif; font-weight: 900 !important; }
+    /* 全域背景改為黑色，文字改為白色 */
+    .stApp {
+        background-color: #000000;
+        color: #ffffff;
+    }
+    
+    /* 按鈕樣式優化 */
+    .stButton>button { 
+        width: 100%; 
+        border-radius: 12px; 
+        font-weight: bold; 
+        background-color: #059669; 
+        color: white;
+        border: none;
+    }
+    .stButton>button:hover {
+        background-color: #10b981;
+        color: white;
+        border: 1px solid #10b981;
+    }
+
+    /* 標題樣式：翡翠綠在黑底下更亮眼 */
+    h1 { 
+        color: #10b981 !important; 
+        font-family: 'Inter', sans-serif; 
+        font-weight: 900 !important; 
+    }
+    
+    /* 確保所有標籤與標題為白色 */
+    h2, h3, h4, h5, h6, p, label, .stMarkdown {
+        color: #ffffff !important;
+    }
+
+    /* 調整輸入框與下拉選單的顏色，避免在黑底下消失 */
+    .stTextInput>div>div>input, 
+    .stDateInput>div>div>input, 
+    .stNumberInput>div>div>input, 
+    .stSelectbox>div>div>div {
+        background-color: #1e293b !important;
+        color: #ffffff !important;
+        border: 1px solid #334155 !important;
+        border-radius: 10px !important;
+    }
+
+    /* 分隔線顏色調整 */
+    hr {
+        border-top: 1px solid #334155 !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
-
+# --- 核心 AI 函數 ---
 def call_gemini(prompt, use_search=False):
     if not GEMINI_API_KEY or GEMINI_API_KEY == "你的_GEMINI_API_KEY_寫在這裡":
         st.error("❌ 尚未在程式碼中填入有效的 GEMINI_API_KEY")
@@ -105,10 +151,10 @@ else:
                     item['selected'] = st.checkbox("", value=item['selected'], key=f"sel_{item['id']}")
                 
                 with col_main:
-                    st.markdown(f"**{item['name']}** <span style='font-size:10px; background:#e2e8f0; padding:2px 8px; border-radius:10px;'>{item['status']}</span>", unsafe_allow_html=True)
+                    st.markdown(f"**{item['name']}** <span style='font-size:10px; background:#334155; color:#10b981; padding:2px 8px; border-radius:10px; font-weight:bold;'>{item['status']}</span>", unsafe_allow_html=True)
                     days = (datetime.date.today() - item['date']).days
                     st.caption(f"📅 購買日期：{item['date']} (已存放 {days} 天)")
-                    st.info(f"💡 AI 建議：{item['advice']}")
+                    st.markdown(f"<div style='background-color:#1e293b; padding:10px; border-radius:10px; border-left:4px solid #10b981; font-size:14px; color:#cbd5e1;'>💡 AI 建議：{item['advice']}</div>", unsafe_allow_html=True)
                 
                 with col_ctrl:
                     c_minus, c_val, c_plus = st.columns([1, 2, 1])
@@ -117,7 +163,7 @@ else:
                             item['qty'] = max(0, item['qty'] - 1)
                             st.rerun()
                     with c_val:
-                        st.markdown(f"<p style='text-align:center; font-weight:bold; margin-top:5px;'>{item['qty']} {item['unit']}</p>", unsafe_allow_html=True)
+                        st.markdown(f"<p style='text-align:center; font-weight:bold; margin-top:5px; color:white;'>{item['qty']} {item['unit']}</p>", unsafe_allow_html=True)
                     with c_plus:
                         if st.button("➕", key=f"plus_{item['id']}"):
                             item['qty'] += 1
@@ -140,10 +186,10 @@ if selected_names:
             
             if recipe_text:
                 st.success("### 👨‍🍳 Gemini 嚴選食譜")
-                st.markdown(recipe_text)
+                st.markdown(f"<div style='color: white;'>{recipe_text}</div>", unsafe_allow_html=True)
                 
                 if sources:
                     st.markdown("---")
                     st.caption("📖 參考來源")
                     for s in sources:
-                        st.markdown(f"🔗 [{s['title']}]({s['uri']})")
+                        st.markdown(f"🔗 [{s['title']}]
